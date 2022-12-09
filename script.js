@@ -2,15 +2,31 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
-var timeDisplay = $('#currentDay');
+  //Display Current Day and Time
+  var timeDisplay = $('#currentDay');
 
-function displayTime() {
-  var rightNow = dayjs().format('MMM DD, YYYY [at] hh:mm:ss a');
-  timeDisplay.text(rightNow);
-}
+  function displayTime() {
+    var rightNow = dayjs().format('MMM DD, YYYY [at] hh:mm:ss a');
+    timeDisplay.text(rightNow);
+  }
 
+$(document).ready (function () {
+  //stored varibales
+  var currentHour = dayjs().format('HH');
+  var schedule = [];
+  var hour = ["09", "10", "11", "12", "13", "14", "15", "16", "17"];
 
-$(function () {
+  //selector varaibles
+  var buttonEl = $(".btn");
+
+  //Event listener for save on click
+  buttonEl.on("click", function() {
+    var saveID = $(this).parent().attr("id");
+    var saveText = $(this).siblings(".description").val();
+    localStorage.setItem(saveID, JSON.stringify(saveText));
+
+  });
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -27,8 +43,6 @@ $(function () {
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
 });
 
 displayTime();
