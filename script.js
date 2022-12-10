@@ -18,8 +18,9 @@ $(document).ready (function () {
 
   //selector varaibles
   var buttonEl = $(".btn");
+  var hourEl = $(".time-block");
 
-  //Event listener for save on click
+  //event listener for save on click
   buttonEl.on("click", function() {
     var saveID = $(this).parent().attr("id");
     var saveText = $(this).siblings(".description").val();
@@ -27,22 +28,29 @@ $(document).ready (function () {
 
   });
 
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
+  //get items for schedule
+  for (i = 0; i < 9; i++){
+    schedule.push(JSON.parse(localStorage.getItem("hour-" + hour[i])));
+  }
+
+  //changes style of hour based on time
+  $(hourEl).each (function() {
+    var id = $(this).attr("id");
+    var right = id.slice(-2);
+    var text = JSON.parse(localStorage.getItem(id))
+    if (text) {
+      $(this).children(".description").html(text);
+    }
+    if (currentHour == right) {
+      $(this).addClass("present")
+    };
+    if (currentHour > right) {
+      $(this).addClass("past")
+    };
+    if (currentHour < right) {
+      $(this).addClass("future")
+    };
+  });
 });
 
 displayTime();
